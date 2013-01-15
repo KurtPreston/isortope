@@ -20,7 +20,22 @@ Load [jQuery](http://jquery.com/) and [Isotope](http://isotope.metafizzy.co/) be
 <script src='isortope.js' />
 ```
 
-### Style
+### Initializing isortope
+There are two ways to initialize isortope:
+
+You can add the class `isortope` to any HTML table:
+```html
+<table class='isortope'>
+  ...
+</table>
+```
+
+Or, you can call `.isortope()` on any jQuery-selected table.  This can be useful if loading over AJAX:
+```javascript
+  $('table#my-table').isortope();
+```
+
+### Animation
 To enable animations, add the [Isotope animation styles](http://isotope.metafizzy.co/docs/animating.html) to your stylesheet.  Below is an abbreviated list:
 
 ```css
@@ -42,21 +57,6 @@ To enable animations, add the [Isotope animation styles](http://isotope.metafizz
 .isotope .isotope-item.no-transition {
   transition-duration: 0s;
 }
-```
-
-### Initializing isortope
-There are two ways to initialize isortope:
-
-You can add the class `isortope` to any HTML table:
-```html
-<table class='isortope'>
-  ...
-</table>
-```
-
-Or, you can call `.isortope()` on any jQuery-selected table.  This can be useful if loading over AJAX:
-```javascript
-  $('table#my-table').isortope();
 ```
 
 Changelog

@@ -74,7 +74,7 @@
       <p>Simple, animated tablesorting with support for numbers, fields, currency, and percents</p>
 
       <div class='section'>
-        <h3>Demo</h3>
+        <h2>Demo</h2>
         <p>Click the headers to sort the table. Fields will respond to value updates.</p>
 
         <table class="isortope">
@@ -126,16 +126,34 @@
       </div>
 
       <div class='section'>
-        <h3>How to use</h3>
-        Load <a href='http://jquery.com/'>jQuery</a> and <a href='http://isotope.metafizzy.co/'>Isotope</a> before loading i<span class='gray'>sort</span>ope:
+        <h2>How to use</h2>
+        <strong>Load <a href='http://jquery.com/'>jQuery</a> and <a href='http://isotope.metafizzy.co/'>Isotope</a> before loading i<span class='gray'>sort</span>ope:</strong>
         <pre>
 &lt;script src='jquery.js' /&gt;
 &lt;script src='isotope.js' /&gt;
 &lt;script src='isortope.js' /&gt;
   </pre>
 
-        If you want animation, add the <a href='http://isotope.metafizzy.co/docs/animating.html'>Isope animation styles</a> to your stylesheet:
-        <pre>
+        <strong>Then, initialize i<span class='gray'>sort</span>ope one of two ways:</strong>
+
+        <div>
+          1. Either add the <code>isortope</code> class to any table:
+
+          <pre>
+&lt;table class='isortope' &gt;
+  ...
+&lt;/table&gt;
+    </pre>
+
+          2. Or, call the <code>.isortope()</code> method on any jQuery object.  This can be useful for tables loaded over AJAX.
+          <pre>
+$('table#my-table').isortope();
+          </pre>
+          </div>
+
+
+          <strong>If you want animation, add the <a href='http://isotope.metafizzy.co/docs/animating.html'>Isope animation styles</a> to your stylesheet:</strong>
+          <pre>
 .isotope,
 .isotope .isotope-item {
   transition-duration: 0.8s;
@@ -156,23 +174,8 @@
 }
   </pre>
 
-        Then, initialize i<span class='gray'>sort</span>ope one of two ways:
 
-        <div>
-          Add the <code>isortope</code> class to any table:
-
-          <pre>
-&lt;table class='isortope' &gt;
-  ...
-&lt;/table&gt;
-    </pre>
-
-          Or, call the <code>.isortope()</code> method on any jQuery object.  This can be useful for tables loaded over AJAX.
-          <pre>
-$('table#my-table').isortope();
-          </pre>
+          </div>
         </div>
-      </div>
-    </div>
-  </body>
-</html>
+      </body>
+    </html>
