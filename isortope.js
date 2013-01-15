@@ -26,7 +26,7 @@ var isortopeCellFilter = function(element) {
       // Check box
       returnVal = input.is(':checked').toString();
     } else {
-      returnVal = input.val();
+      returnVal = input.val().toLowerCase();
     }
   } else {
     returnVal = text;
