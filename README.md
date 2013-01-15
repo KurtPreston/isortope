@@ -15,7 +15,7 @@ Load [jQuery](http://jquery.com/) and [Isotope](http://isotope.metafizzy.co/) be
 ```
 
 ### Style
-To enable animations, add the [Isotope animation styles] to your stylesheet:
+To enable animations, add the [Isotope animation styles](http://isotope.metafizzy.co/docs/animating.html) to your stylesheet.  Below is an abbreviated list:
 
 ```css
 .isotope,
@@ -52,3 +52,10 @@ Or, you can call `.isortope()` on any jQuery-selected table.  This can be useful
 ```javascript
   $('table#my-table').isortope();
 ```
+
+Changelog
+---
++ **v.1.0**
+  - public release
+  - supports numbers, percents, currency, and form inputs
+  - simple demo.html
