@@ -3,6 +3,10 @@ isortope
 
 Simple, animated JavaScript table sorting with support for numbers, fields, currency, and percents.  Based on [Isotope](http://isotope.metafizzy.co/).
 
+Demo
+----
+View a live demo [here](http://www.kurtpreston.com/isortope).
+
 Use
 ---
 ### Requirements
