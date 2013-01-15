@@ -1,0 +1,178 @@
+<html>
+  <head>
+    <title>Isortope: animated table sorter</title>
+    <script src='js/jquery-1.8.3.min.js'></script>
+    <script src='js/jquery.isotope.min.js'></script>
+    <script src='isortope.js'></script>
+    <style type='text/css'>
+      #content {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      .gray {
+        color: #555;
+      }
+
+      pre {
+        margin-left: 20px;
+        margin-bottom: 15px;
+      }
+
+      .section {
+        margin-bottom: 25px;
+      }
+
+      .isotope,
+      .isotope .isotope-item {
+        /* change duration value to whatever you like */
+        -webkit-transition-duration: 0.8s;
+        -moz-transition-duration: 0.8s;
+        -ms-transition-duration: 0.8s;
+        -o-transition-duration: 0.8s;
+        transition-duration: 0.8s;
+      }
+
+      .isotope {
+        -webkit-transition-property: height, width;
+        -moz-transition-property: height, width;
+        -ms-transition-property: height, width;
+        -o-transition-property: height, width;
+        transition-property: height, width;
+      }
+
+      .isotope .isotope-item {
+        -webkit-transition-property: -webkit-transform, opacity;
+        -moz-transition-property:    -moz-transform, opacity;
+        -ms-transition-property:     -ms-transform, opacity;
+        -o-transition-property:      -o-transform, opacity;
+        transition-property:         transform, opacity;
+      }
+
+      /**** disabling Isotope CSS3 transitions ****/
+
+      .isotope.no-transition,
+      .isotope.no-transition .isotope-item,
+      .isotope .isotope-item.no-transition {
+        -webkit-transition-duration: 0s;
+        -moz-transition-duration: 0s;
+        -ms-transition-duration: 0s;
+        -o-transition-duration: 0s;
+        transition-duration: 0s;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id='content'>
+      <h1>i<span class='gray'>sort</span>ope</h1>
+      <p>Simple, animated tablesorting with support for numbers, fields, currency, and percents</p>
+
+      <div class='section'>
+        <h3>Demo</h3>
+        <p>Click the headers to sort the table. Fields will respond to value updates.</p>
+
+        <table class="isortope">
+          <thead>
+            <tr style='text-align: left;'>
+              <th>Text</th>
+              <th>Number</th>
+              <th>Cash</th>
+              <th>Percent</th>
+              <th>Check Box</th>
+              <th>Text Field</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Smith</td>
+              <td>23.3</td>
+              <td>$50.00</td>
+              <td>74%</td>
+              <td><input type="checkbox" checked='checked'></td>
+              <td><input type="text" value='X'></td>
+            </tr>
+            <tr>
+              <td>Bach</td>
+              <td>2</td>
+              <td>$20</td>
+              <td>74.9%</td>
+              <td><input type="checkbox"></td>
+              <td><input type="text" value='B'></td>
+            </tr>
+            <tr>
+              <td>Doe</td>
+              <td>24</td>
+              <td>$44</td>
+              <td>80%</td>
+              <td><input type="checkbox" checked='checked'></td>
+              <td><input type="text" value='Q'></td>
+            </tr>
+            <tr>
+              <td>Conway</td>
+              <td>12</td>
+              <td>$3,493</td>
+              <td>8%</td>
+              <td><input type="checkbox"></td>
+              <td><input type="text" value='A'></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class='section'>
+        <h3>How to use</h3>
+        Load <a href='http://jquery.com/'>jQuery</a> and <a href='http://isotope.metafizzy.co/'>Isotope</a> before loading i<span class='gray'>sort</span>ope:
+        <pre>
+&lt;script src='jquery.js' /&gt;
+&lt;script src='isotope.js' /&gt;
+&lt;script src='isortope.js' /&gt;
+  </pre>
+
+        If you want animation, add the <a href='http://isotope.metafizzy.co/docs/animating.html'>Isope animation styles</a> to your stylesheet:
+        <pre>
+.isotope,
+.isotope .isotope-item {
+  transition-duration: 0.8s;
+}
+
+.isotope {
+  transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  transition-property: transform, opacity;
+}
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  transition-duration: 0s;
+}
+  </pre>
+
+        Then, initialize i<span class='gray'>sort</span>ope one of two ways:
+
+        <div>
+          Add the <code>isortope</code> class to any table:
+
+          <pre>
+&lt;table class='isortope' &gt;
+  ...
+&lt;/table&gt;
+    </pre>
+
+          Or, call the <code>.isortope()</code> method on any jQuery object.  This can be useful for tables loaded over AJAX.
+          <pre>
+$('table#my-table').isortope();
+          </pre>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
