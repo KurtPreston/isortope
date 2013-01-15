@@ -4,6 +4,8 @@ var isortopeCellFilter = function(element) {
   var numText = text.replace(',', '');
   var lstrip = numText.substr(1, numText.length);
   var rstrip = numText.substr(1, numText.length);
+
+  var input = $(element).find('input');
   var returnVal;
 
   if (text != '') {
@@ -18,15 +20,16 @@ var isortopeCellFilter = function(element) {
     } else {
       returnVal = text;
     }
-  } else {
+  } else if (input.length > 0) {
     // No text -- assuming form input
-    var input = $(element).find('input');
     if (input.val() == 'on') {
       // Check box
       returnVal = input.is(':checked').toString();
     } else {
       returnVal = input.val();
     }
+  } else {
+    returnVal = text;
   }
 
   return returnVal;
