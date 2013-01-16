@@ -14,14 +14,17 @@ var isortopeCellFilter = function(element) {
       // Text is a flaot or integer
       returnVal = parseFloat(numText);
     } else if (!isNaN(parseFloat(lstrip))) {
+      // is num without left-most character (i.e. $4.50)
       returnVal = parseFloat(lstrip);
     } else if (!isNaN(parseFloat(rstrip))) {
+      // is num without right-most character (i.e. 60%)
       returnVal = parseFloat(rstrip);
     } else {
-      returnVal = text;
+      // Plain text
+      returnVal = text.toLowerCase();
     }
   } else if (input.length > 0) {
-    // No text -- assuming form input
+    // If there are inputs
     if (input.val() == 'on') {
       // Check box
       returnVal = input.is(':checked').toString();
@@ -29,7 +32,8 @@ var isortopeCellFilter = function(element) {
       returnVal = input.val().toLowerCase();
     }
   } else {
-    returnVal = text;
+    // No text or inputs... sort by raw HTML
+    returnVal = $(element).html();
   }
 
   return returnVal;
