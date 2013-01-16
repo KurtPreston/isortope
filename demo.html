@@ -125,57 +125,6 @@
         </table>
       </div>
 
-      <div class='section'>
-        <h2>How to use</h2>
-        <strong>Load <a href='http://jquery.com/'>jQuery</a> and <a href='http://isotope.metafizzy.co/'>Isotope</a> before loading i<span class='gray'>sort</span>ope:</strong>
-        <pre>
-&lt;script src='jquery.js' /&gt;
-&lt;script src='isotope.js' /&gt;
-&lt;script src='isortope.js' /&gt;
-  </pre>
-
-        <strong>Then, initialize i<span class='gray'>sort</span>ope one of two ways:</strong>
-
-        <div>
-          1. Either add the <code>isortope</code> class to any table:
-
-          <pre>
-&lt;table class='isortope' &gt;
-  ...
-&lt;/table&gt;
-    </pre>
-
-          2. Or, call the <code>.isortope()</code> method on any jQuery object.  This can be useful for tables loaded over AJAX.
-          <pre>
-$('table#my-table').isortope();
-          </pre>
-          </div>
-
-
-          <strong>If you want animation, add the <a href='http://isotope.metafizzy.co/docs/animating.html'>Isope animation styles</a> to your stylesheet:</strong>
-          <pre>
-.isotope,
-.isotope .isotope-item {
-  transition-duration: 0.8s;
-}
-
-.isotope {
-  transition-property: height, width;
-}
-
-.isotope .isotope-item {
-  transition-property: transform, opacity;
-}
-
-.isotope.no-transition,
-.isotope.no-transition .isotope-item,
-.isotope .isotope-item.no-transition {
-  transition-duration: 0s;
-}
-        </pre>
-      </div>
-    </div>
-
     <script type='text/javascript'>
       $('table.isortope').on('sort', function() {
         console.log("Sort event detected");
