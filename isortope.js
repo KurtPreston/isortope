@@ -111,6 +111,7 @@ var isortopeCellFilter = function(element) {
           sortAscending: !reverse,
         });
 
+        table.trigger('sort');
       });
 
       // Update sort data if fields change
@@ -118,6 +119,8 @@ var isortopeCellFilter = function(element) {
         var parentRow = $(this).closest('tr');
         table.find('tbody').isotope('updateSortData', parentRow);
       });
+
+      table.trigger('initialized');
     });
   };
 })(jQuery);

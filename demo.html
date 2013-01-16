@@ -172,10 +172,18 @@ $('table#my-table').isortope();
 .isotope .isotope-item.no-transition {
   transition-duration: 0s;
 }
-  </pre>
+        </pre>
+      </div>
+    </div>
 
+    <script type='text/javascript'>
+      $('table.isortope').on('sort', function() {
+        console.log("Sort event detected");
+      });
 
-          </div>
-        </div>
-      </body>
-    </html>
+      $('table.isortope').on('initialized', function() {
+        console.log("Isortope initialized");
+      });
+    </script>
+  </body>
+</html>

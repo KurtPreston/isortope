@@ -59,6 +59,16 @@ To enable animations, add the [Isotope animation styles](http://isotope.metafizz
 }
 ```
 
+### Events
+
+**isortope** fires events after initialization and when sorting. You can hook into these events with jQuery:
+
+```javascript
+  $('table.isortope').on('sort', function() {...});
+
+  $('table.isortope').on('initialized', function() {...});
+```
+
 Changelog
 ---
 + **v.1.0**
