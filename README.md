@@ -36,26 +36,45 @@ Or, you can call `.isortope()` on any jQuery-selected table.  This can be useful
 ```
 
 ### Animation
-To enable animations, add the [Isotope animation styles](http://isotope.metafizzy.co/docs/animating.html) to your stylesheet.  Below is an abbreviated list:
+To enable animations, add the [Isotope animation styles](http://isotope.metafizzy.co/docs/animating.html) to your stylesheet:
 
 ```css
 .isotope,
 .isotope .isotope-item {
-  transition-duration: 0.8s;
+  /* change duration value to whatever you like */
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+      -ms-transition-duration: 0.8s;
+       -o-transition-duration: 0.8s;
+          transition-duration: 0.8s;
 }
 
 .isotope {
-  transition-property: height, width;
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
 }
 
 .isotope .isotope-item {
-  transition-property: transform, opacity;
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
 }
+
+/**** disabling Isotope CSS3 transitions ****/
 
 .isotope.no-transition,
 .isotope.no-transition .isotope-item,
 .isotope .isotope-item.no-transition {
-  transition-duration: 0s;
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
 }
 ```
 
