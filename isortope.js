@@ -58,8 +58,9 @@ var isortopeCellFilter = function(element) {
 
         // Set th width
         var th = table.find('th:nth-child(' + (col + 1) + ')');
-        th.css('width', th.width());
-        th.css('max-width', th.width());
+        var thWidth = th.width();
+        th.css('width', thWidth);
+        th.css('max-width', thWidth);
       }
 
       // Define sorters
@@ -83,7 +84,10 @@ var isortopeCellFilter = function(element) {
       // Style
       var headerHeight = table.find('thead').height();
       table.find('tr').css('top', headerHeight);
-      table.find('th').css('cursor', 'pointer');
+      var th = table.find('th');
+      th.css('cursor', 'pointer');
+      th.height(th.height());
+      th.css('line-height', 1);
 
       var removeSortArrow = function() {
         var activeHeader = table.find('th.sortAsc,th.sortDesc');
