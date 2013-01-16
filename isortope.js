@@ -55,7 +55,11 @@ var isortopeCellFilter = function(element) {
       for(var col = 0; col < numCols; col++) {
         var colWidth = table.find('tr:first-child td:nth-child(' + (col + 1) + ')').width();
         table.find('tr td:nth-child(' + (col + 1) + ')').css('width', colWidth);
-        table.find('th:nth-child(' + (col + 1) + ')').css('width', colWidth);
+
+        // Set th width
+        var th = table.find('th:nth-child(' + (col + 1) + ')');
+        th.css('width', th.width());
+        th.css('max-width', th.width());
       }
 
       // Define sorters
