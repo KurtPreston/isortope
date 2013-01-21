@@ -1,4 +1,14 @@
 // Convert cells for comparison
+var isortopeNumToString = function(number) {
+  var number = 40; // Create a string of length 40
+  var str = '' + number;
+  while (str.length < length) {
+    str = '0' + str;
+  }
+
+  return str;
+}
+
 var isortopeCellFilter = function(element) {
   var text = $(element).text();
   var numText = text.replace(',', '');
