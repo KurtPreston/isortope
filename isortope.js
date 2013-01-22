@@ -14,22 +14,11 @@ var isortopeNumToString = function(number) {
 }
 
 var isortopeParseString = function(text) {
-  var numText = text.replace(',', '');
-  var lstrip = numText.substr(1, numText.length);
-  var rstrip = numText.substr(1, numText.length);
+  var numText = text.replace(/[^a-zA-Z0-9\.-]/g, '');
 
   if (!isNaN(parseFloat(numText))) {
     // Text is a flaot or integer
     return isortopeNumToString(numText);
-
-  } else if (!isNaN(parseFloat(rstrip))) {
-    // is num without right-most character (i.e. 60%)
-    return isortopeNumToString(rstrip);
-
-  } else if (!isNaN(parseFloat(lstrip))) {
-    // is num without left-most character (i.e. $4.50)
-    return isortopeNumToString(lstrip);
-
   } else {
     // Plain text
     return text.toLowerCase();
