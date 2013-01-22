@@ -1,3 +1,10 @@
+/*
+ * isortope v1.1
+ * Simple, animated JavaScript table sorting
+ *
+ * https://github.com/KurtPreston/isortope
+ */
+
 // Convert cells for comparison
 var isortopeNumToString = function(number) {
   // Note: the huge offset is to enable negative numbers to be compared as strings
@@ -106,6 +113,7 @@ setInterval(function(){
         var sortFunction = new Function('item', sortFunctionDef);
         sorters[colClass] = sortFunction;
         table.find('tr td:nth-child(' + (col + 1) + ')').addClass(colClass);
+        table.find('tr td:nth-child(' + (col + 1) + ')').data('sort-type',colClass);
         table.find('th:nth-child(' + (col + 1) + ')').attr('data-sort-type', colClass);
       }
 
@@ -158,15 +166,29 @@ setInterval(function(){
       });
 
       // Update sort data if fields change
-      table.find('input').change(function() {
-        var parentRow = $(this).closest('tr');
+      cellChanged=function(cell){
+        var parentRow = $(cell).closest('tr');
         table.find('tbody').isotope('updateSortData', parentRow);
+
+        var column=$(cell).data('sort-type');
+        var columnHeader=$('th[data-sort-type='+column+']');
+
+        //Only re-sort if this column is the sort column
+        if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
+        {
+          table.find('tbody').isotope({sortBy: column});
+          table.trigger('sort');
+        }
+      }
+
+      table.find('input').change(function() {
+        var cell=$(this).parent('td');
+        cellChanged(cell);
       });
 
       // Update sort data if cell text changes
-      table.find('td').contentChange( function() {
-        var parentRow = $(this).closest('tr');
-        table.find('tbody').isotope('updateSortData', parentRow);
+      table.find('td').contentChange( function(){
+        cellChanged(this);
       });
 
       table.trigger('initialized');
