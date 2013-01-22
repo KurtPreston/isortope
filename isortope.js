@@ -1,8 +1,11 @@
 // Convert cells for comparison
 var isortopeNumToString = function(number) {
-  var number = 40; // Create a string of length 40
+  number = parseFloat(number)
+  var length = 40; // Create a string of length 40
   var str = '' + number;
-  while (str.length < length) {
+  var numDigits = Math.floor(Math.log(number) / Math.LN10);
+
+  for(var i = numDigits; i < length; i++) {
     str = '0' + str;
   }
 
@@ -22,13 +25,13 @@ var isortopeCellFilter = function(element) {
     // Cell has text
     if (!isNaN(parseFloat(numText))) {
       // Text is a flaot or integer
-      returnVal = parseFloat(numText);
+      returnVal = isortopeNumToString(numText);
     } else if (!isNaN(parseFloat(lstrip))) {
       // is num without left-most character (i.e. $4.50)
-      returnVal = parseFloat(lstrip);
+      returnVal = isortopeNumToString(lstrip);
     } else if (!isNaN(parseFloat(rstrip))) {
       // is num without right-most character (i.e. 60%)
-      returnVal = parseFloat(rstrip);
+      returnVal = isortopeNumToString(rstrip);
     } else {
       // Plain text
       returnVal = text.toLowerCase();
