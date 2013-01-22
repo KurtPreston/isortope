@@ -1,8 +1,9 @@
 // Convert cells for comparison
 var isortopeNumToString = function(number) {
-  number = parseFloat(number)
+  // Note: the huge offset is to enable negative numbers to be compared as strings
+  number = parseFloat(number) + 450359962737;
   var length = 40; // Create a string of length 40
-  var str = '' + number;
+  var str = number.toString();
   var numDigits = Math.floor(Math.log(number) / Math.LN10);
 
   for(var i = numDigits; i < length; i++) {
@@ -12,45 +13,44 @@ var isortopeNumToString = function(number) {
   return str;
 }
 
+var isortopeParseString = function(text) {
+  var numText = text.replace(',', '');
+  var lstrip = numText.substr(1, numText.length);
+  var rstrip = numText.substr(1, numText.length);
+
+  if (!isNaN(parseFloat(numText))) {
+    // Text is a flaot or integer
+    return isortopeNumToString(numText);
+
+  } else if (!isNaN(parseFloat(rstrip))) {
+    // is num without right-most character (i.e. 60%)
+    return isortopeNumToString(rstrip);
+
+  } else if (!isNaN(parseFloat(lstrip))) {
+    // is num without left-most character (i.e. $4.50)
+    return isortopeNumToString(lstrip);
+
+  } else {
+    // Plain text
+    return text.toLowerCase();
+  }
+}
+
 var isortopeCellFilter = function(element) {
   var text = $(element).text();
   var input = $(element).find('input');
   var returnVal;
 
-  var parseString = function(text) {
-    var numText = text.replace(',', '');
-    var lstrip = text;
-    if (numText.substr(0,1) != '-') {
-      // Don't lstrip negative numbers
-      lstrip = numText.substr(1, numText.length);
-    }
-    var rstrip = numText.substr(1, numText.length);
-
-    if (!isNaN(parseFloat(numText))) {
-      // Text is a flaot or integer
-      return isortopeNumToString(numText);
-    } else if (!isNaN(parseFloat(lstrip))) {
-      // is num without left-most character (i.e. $4.50)
-      return isortopeNumToString(lstrip);
-    } else if (!isNaN(parseFloat(rstrip))) {
-      // is num without right-most character (i.e. 60%)
-      return isortopeNumToString(rstrip);
-    } else {
-      // Plain text
-      return text.toLowerCase();
-    }
-  }
-
   if (text != '') {
     // Cell has text
-    returnVal = parseString(text);
+    returnVal = isortopeParseString(text);
   } else if (input.length > 0) {
     // If there are inputs
     if (input.val() == 'on') {
       // Check box
       returnVal = input.is(':checked').toString();
     } else {
-      returnVal = parseString(input.val());
+      returnVal = isortopeParseString(input.val());
     }
   } else {
     // No text or inputs... sort by raw HTML
