@@ -14,35 +14,39 @@ var isortopeNumToString = function(number) {
 
 var isortopeCellFilter = function(element) {
   var text = $(element).text();
-  var numText = text.replace(',', '');
-  var lstrip = numText.substr(1, numText.length);
-  var rstrip = numText.substr(1, numText.length);
-
   var input = $(element).find('input');
   var returnVal;
 
-  if (text != '') {
-    // Cell has text
+  var parseString = function(text) {
+    var numText = text.replace(',', '');
+    var lstrip = numText.substr(1, numText.length);
+    var rstrip = numText.substr(1, numText.length);
+
     if (!isNaN(parseFloat(numText))) {
       // Text is a flaot or integer
-      returnVal = isortopeNumToString(numText);
+      return isortopeNumToString(numText);
     } else if (!isNaN(parseFloat(lstrip))) {
       // is num without left-most character (i.e. $4.50)
-      returnVal = isortopeNumToString(lstrip);
+      return isortopeNumToString(lstrip);
     } else if (!isNaN(parseFloat(rstrip))) {
       // is num without right-most character (i.e. 60%)
-      returnVal = isortopeNumToString(rstrip);
+      return isortopeNumToString(rstrip);
     } else {
       // Plain text
-      returnVal = text.toLowerCase();
+      return text.toLowerCase();
     }
+  }
+
+  if (text != '') {
+    // Cell has text
+    returnVal = parseString(text);
   } else if (input.length > 0) {
     // If there are inputs
     if (input.val() == 'on') {
       // Check box
       returnVal = input.is(':checked').toString();
     } else {
-      returnVal = input.val().toLowerCase();
+      returnVal = parseString(input.val());
     }
   } else {
     // No text or inputs... sort by raw HTML
