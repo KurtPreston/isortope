@@ -19,7 +19,11 @@ var isortopeCellFilter = function(element) {
 
   var parseString = function(text) {
     var numText = text.replace(',', '');
-    var lstrip = numText.substr(1, numText.length);
+    var lstrip = text;
+    if (numText.substr(0,1) != '-') {
+      // Don't lstrip negative numbers
+      lstrip = numText.substr(1, numText.length);
+    }
     var rstrip = numText.substr(1, numText.length);
 
     if (!isNaN(parseFloat(numText))) {
