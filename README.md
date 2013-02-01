@@ -90,6 +90,9 @@ To enable animations, add the [Isotope animation styles](http://isotope.metafizz
 
 Changelog
 ---
++ **v.1.1**
+  - auto re-sort when table data changes
+  - bug fixes
 + **v.1.0**
   - public release
   - supports numbers, percents, currency, and form inputs

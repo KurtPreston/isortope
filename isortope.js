@@ -1,3 +1,10 @@
+/*
+ * isortope v1.1
+ * Simple, animated JavaScript table sorting
+ *
+ * https://github.com/KurtPreston/isortope
+ */
+
 // Convert cells for comparison
 var isortopeNumToString = function(number) {
   // Note: the huge offset is to enable negative numbers to be compared as strings
@@ -159,14 +166,15 @@ setInterval(function(){
       });
 
       // Update sort data if fields change
-      cellChanged=function(cell){        
+      cellChanged=function(cell){
         var parentRow = $(cell).closest('tr');
         table.find('tbody').isotope('updateSortData', parentRow);
 
         var column=$(cell).data('sort-type');
         var columnHeader=$('th[data-sort-type='+column+']');
-        //Only re-sort if this column is the sort column 
-        if(columnHeader.hasClass('sortAsc')||columnHeader.hasClass('sortDesc'))
+
+        //Only re-sort if this column is the sort column
+        if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
         {
           table.find('tbody').isotope({sortBy: column});
           table.trigger('sort');
