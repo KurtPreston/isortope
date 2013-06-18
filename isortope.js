@@ -166,7 +166,7 @@ setInterval(function(){
       });
 
       // Update sort data if fields change
-      cellChanged=function(cell){
+      var cellChanged=function(cell){
         var parentRow = $(cell).closest('tr');
         table.find('tbody').isotope('updateSortData', parentRow);
 
