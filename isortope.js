@@ -1,8 +1,8 @@
 /*
- * isortope v1.1
- * Simple, animated JavaScript table sorting
- *
- * https://github.com/KurtPreston/isortope
+* isortope v1.1
+* Simple, animated JavaScript table sorting
+*
+* https://github.com/KurtPreston/isortope
 */
 
 // Convert cells for comparison
@@ -86,7 +86,18 @@ setInterval(function(){
 
   function Isortope(el, opts) {
     this.$el = $(el);
-    this.opts = opts;
+
+    this.defaults = {
+      autoResort: true,
+      autoResortInput: true,
+      autoResortContent: true
+    }
+
+    this.opts = $.extend(this.defaults, opts, {
+      autoResort: this.$el.data('isortope-autoresort'),
+      autoResortInput: this.$el.data('isortope-autoresort-input'),
+      autoResortContent: this.$el.data('isortope-autoresort-content')
+    });
 
     this.init();
   }
@@ -194,15 +205,20 @@ setInterval(function(){
       }
     }
 
-    table.find('input').change(function() {
-      var cell=$(this).parent('td');
-      cellChanged(cell);
-    });
+    if (this.opts.autoResort && this.opts.autoResortInput) {
+      // Update sort data if input value changes
+      table.find('input').change(function() {
+        var cell=$(this).parent('td');
+        cellChanged(cell);
+      });
+    }
 
-    // Update sort data if cell text changes
-    table.find('td').contentChange( function(){
-      cellChanged(this);
-    });
+    if (this.opts.autoResort && this.opts.autoResortContent) {
+      // Update sort data if cell text changes
+      table.find('td').contentChange( function(){
+        cellChanged(this);
+      });
+    }
 
     table.trigger('initialized');
   };
