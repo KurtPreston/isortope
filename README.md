@@ -40,9 +40,9 @@ Or, you can call `.isortope()` on any jQuery-selected table.  This can be useful
 By default, Isortope will monitor your table for any changes to cells.  You can disable this behavior either via HTML attributes, or on initialization via Javascript.
 
 By HTML attributes:
-+ data-isortope-autoresort: if false, disable auto re-sorting when input or cell contents change
-+ data-isortope-autoresort-input: if false, disable monitoring input changes
-+ data-isortope-autoresort-content: if false, disable monitoring HTML content changes
++ **data-isortope-autoresort**: if false, disable auto re-sorting when input or cell contents change
++ **data-isortope-autoresort-input**: if false, disable monitoring input changes
++ **data-isortope-autoresort-content**: if false, disable monitoring HTML content changes
 
 HTML Example:
 ```html
@@ -52,9 +52,9 @@ HTML Example:
 ```
 
 By JavaScript on initialization:
-+ autoResort: if false, disable auto re-sorting when input or cell contents change
-+ autoResortInput: if false, disable monitoring input changes
-+ autoResortContent: if false, disable monitoring HTML content changes
++ **autoResort**: if false, disable auto re-sorting when input or cell contents change
++ **autoResortInput**: if false, disable monitoring input changes
++ **autoResortContent**: if false, disable monitoring HTML content changes
 
 JavaScript example:
 ```javascript
