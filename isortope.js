@@ -3,7 +3,7 @@
  * Simple, animated JavaScript table sorting
  *
  * https://github.com/KurtPreston/isortope
- */
+*/
 
 // Convert cells for comparison
 var isortopeNumToString = function(number) {
@@ -81,120 +81,132 @@ setInterval(function(){
   }
 },500);
 
-(function($) {
-  $.fn.isortope = function() {
+(function($, doc, win) {
+  "use strict";
 
+  function Isortope(el, opts) {
+    this.$el = $(el);
+    this.opts = opts;
+
+    this.init();
+  }
+
+  $.fn.isortope = function(opts) {
     return this.each(function() {
-
-      var table = $(this);
-
-      // Fix position
-      table.css('position', 'relative');
-      table.css('height', table.height());
-
-      // Fix column width
-      var numCols = table.find('th').length
-      for(var col = 0; col < numCols; col++) {
-        var colWidth = table.find('tr:first-child td:nth-child(' + (col + 1) + ')').width();
-        table.find('tr td:nth-child(' + (col + 1) + ')').css('width', colWidth);
-
-        // Set th width
-        var th = table.find('th:nth-child(' + (col + 1) + ')');
-        var thWidth = th.width();
-        th.css('width', thWidth);
-        th.css('max-width', thWidth);
-      }
-
-      // Define sorters
-      var sorters = {};
-      for(var col = 0; col < numCols; col++) {
-        var colClass = 'col' + col;
-        var sortFunctionDef = "return isortopeCellFilter(item.find('." + colClass + "'));";
-        var sortFunction = new Function('item', sortFunctionDef);
-        sorters[colClass] = sortFunction;
-        table.find('tr td:nth-child(' + (col + 1) + ')').addClass(colClass);
-        table.find('tr td:nth-child(' + (col + 1) + ')').data('sort-type',colClass);
-        table.find('th:nth-child(' + (col + 1) + ')').attr('data-sort-type', colClass);
-      }
-
-      // Initialize isotope
-      table.find('tbody').isotope({
-        itemSelector: 'tr',
-        layout: 'fitRows',
-        getSortData: sorters
-      });
-
-      // Style
-      var headerHeight = table.find('thead').height();
-      table.find('tr').css('top', headerHeight);
-      var th = table.find('th');
-      th.css('cursor', 'pointer');
-      th.height(th.height());
-      th.css('line-height', 1);
-
-      var removeSortArrow = function() {
-        var activeHeader = table.find('th.sortAsc,th.sortDesc');
-        activeHeader.find('.sort-arrow').remove();
-        activeHeader.removeClass('sortAsc').removeClass('sortDesc');
-      }
-
-      // Header click handlers
-      table.find('th').click(function() {
-        var sort = $(this).attr('data-sort-type');
-        var reverse;
-
-        if ($(this).hasClass('sortAsc')) {
-          // Switch to sortDesc
-          reverse = true;
-          removeSortArrow();
-          $(this).html($(this).html() + '<span class="sort-arrow">\u25BC</span>');
-          $(this).addClass('sortDesc');
-        } else {
-          // Switch to sortAsc
-          reverse = false;
-          removeSortArrow();
-          $(this).html($(this).html() + '<span class="sort-arrow">\u25B2</span>');
-          $(this).addClass('sortAsc');
-        }
-
-        table.find('tbody').isotope({
-          sortBy: sort,
-          sortAscending: !reverse,
-        });
-
-        table.trigger('sort');
-      });
-
-      // Update sort data if fields change
-      var cellChanged=function(cell){
-        var parentRow = $(cell).closest('tr');
-        table.find('tbody').isotope('updateSortData', parentRow);
-
-        var column=$(cell).data('sort-type');
-        var columnHeader=$('th[data-sort-type='+column+']');
-
-        //Only re-sort if this column is the sort column
-        if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
-        {
-          table.find('tbody').isotope({sortBy: column});
-          table.trigger('sort');
-        }
-      }
-
-      table.find('input').change(function() {
-        var cell=$(this).parent('td');
-        cellChanged(cell);
-      });
-
-      // Update sort data if cell text changes
-      table.find('td').contentChange( function(){
-        cellChanged(this);
-      });
-
-      table.trigger('initialized');
+      new Isortope(this, opts);
     });
+  }
+
+  Isortope.prototype.init = function() {
+    var table = this.$el;
+
+    // Fix position
+    table.css('position', 'relative');
+    table.css('height', table.height());
+
+    // Fix column width
+    var numCols = table.find('th').length
+    for(var col = 0; col < numCols; col++) {
+      var colWidth = table.find('tr:first-child td:nth-child(' + (col + 1) + ')').width();
+      table.find('tr td:nth-child(' + (col + 1) + ')').css('width', colWidth);
+
+      // Set th width
+      var th = table.find('th:nth-child(' + (col + 1) + ')');
+      var thWidth = th.width();
+      th.css('width', thWidth);
+      th.css('max-width', thWidth);
+    }
+
+    // Define sorters
+    var sorters = {};
+
+    for(var col = 0; col < numCols; col++) {
+      var colClass = 'col' + col;
+      var sortFunctionDef = "return isortopeCellFilter(item.find('." + colClass + "'));";
+      var sortFunction = new Function('item', sortFunctionDef);
+      sorters[colClass] = sortFunction;
+      table.find('tr td:nth-child(' + (col + 1) + ')').addClass(colClass);
+      table.find('tr td:nth-child(' + (col + 1) + ')').data('sort-type',colClass);
+      table.find('th:nth-child(' + (col + 1) + ')').attr('data-sort-type', colClass);
+    }
+
+    // Initialize isotope
+    table.find('tbody').isotope({
+      itemSelector: 'tr',
+      layout: 'fitRows',
+      getSortData: sorters
+    });
+
+    // Style
+    var headerHeight = table.find('thead').height();
+    table.find('tr').css('top', headerHeight);
+    var th = table.find('th');
+    th.css('cursor', 'pointer');
+    th.height(th.height());
+    th.css('line-height', 1);
+
+    var removeSortArrow = function() {
+      var activeHeader = table.find('th.sortAsc,th.sortDesc');
+      activeHeader.find('.sort-arrow').remove();
+      activeHeader.removeClass('sortAsc').removeClass('sortDesc');
+    }
+
+    // Header click handlers
+    table.find('th').click(function() {
+      var sort = $(this).attr('data-sort-type');
+      var reverse;
+
+      if ($(this).hasClass('sortAsc')) {
+        // Switch to sortDesc
+        reverse = true;
+        removeSortArrow();
+        $(this).html($(this).html() + '<span class="sort-arrow">\u25BC</span>');
+        $(this).addClass('sortDesc');
+      } else {
+        // Switch to sortAsc
+        reverse = false;
+        removeSortArrow();
+        $(this).html($(this).html() + '<span class="sort-arrow">\u25B2</span>');
+        $(this).addClass('sortAsc');
+      }
+
+      table.find('tbody').isotope({
+        sortBy: sort,
+        sortAscending: !reverse,
+      });
+
+      table.trigger('sort');
+    });
+
+    // Update sort data if fields change
+    var cellChanged=function(cell){
+      var parentRow = $(cell).closest('tr');
+      table.find('tbody').isotope('updateSortData', parentRow);
+
+      var column=$(cell).data('sort-type');
+      var columnHeader=$('th[data-sort-type='+column+']');
+
+      //Only re-sort if this column is the sort column
+      if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
+      {
+        table.find('tbody').isotope({sortBy: column});
+        table.trigger('sort');
+      }
+    }
+
+    table.find('input').change(function() {
+      var cell=$(this).parent('td');
+      cellChanged(cell);
+    });
+
+    // Update sort data if cell text changes
+    table.find('td').contentChange( function(){
+      cellChanged(this);
+    });
+
+    table.trigger('initialized');
   };
-})(jQuery);
+})(jQuery, document, window);
 
 $(document).ready(function() {
   $('table.isortope').isortope();
