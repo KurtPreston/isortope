@@ -35,6 +35,32 @@ Or, you can call `.isortope()` on any jQuery-selected table.  This can be useful
   $('table#my-table').isortope();
 ```
 
+### Configuration
+
+By default, Isortope will monitor your table for any changes to cells.  You can disable this behavior either via HTML attributes, or on initialization via Javascript.
+
+By HTML attributes:
++ data-isortope-autoresort: if false, disable auto re-sorting when input or cell contents change
++ data-isortope-autoresort-input: if false, disable monitoring input changes
++ data-isortope-autoresort-content: if false, disable monitoring HTML content changes
+
+HTML Example:
+```html
+<table class='isortope' data-isortope-autoresort='false'>
+  ...
+</table>
+```
+
+By JavaScript on initialization:
++ autoResort: if false, disable auto re-sorting when input or cell contents change
++ autoResortInput: if false, disable monitoring input changes
++ autoResortContent: if false, disable monitoring HTML content changes
+
+JavaScript example:
+```javascript
+  $('table#my-table').isortope({autoResort: false});
+```
+
 ### Animation
 To enable animations, add the [Isotope animation styles](http://isotope.metafizzy.co/docs/animating.html) to your stylesheet:
 
