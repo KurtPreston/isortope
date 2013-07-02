@@ -21,10 +21,14 @@ var isortopeNumToString = function(number) {
 }
 
 var isortopeParseString = function(text) {
-  var numText = text.replace(/[^a-zA-Z0-9\.-]/g, '');
+  // Remove whitespace
+  text = text.replace(/^\s+|\s+$/g, "");
+
+  // Check first word
+  var numText = text.split(' ')[0].replace(/[^a-zA-Z0-9\.-]/g, '');
 
   if (!isNaN(parseFloat(numText))) {
-    // Text is a flaot or integer
+    // Text is a float or integer
     return isortopeNumToString(numText);
   } else {
     // Plain text
