@@ -9,6 +9,8 @@ Demo
 ----
 View a live demo [here](http://www.kurtpreston.com/isortope).
 
+![](https://raw.github.com/KurtPreston/isortope/master/demo/isortope.gif)
+
 Use
 ---
 ### Requirements
