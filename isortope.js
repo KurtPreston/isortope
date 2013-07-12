@@ -114,6 +114,7 @@ setInterval(function(){
 
   Isortope.prototype.init = function() {
     var table = this.$el;
+    var tbody = table.find('tbody');
 
     // Fix position
     table.css('position', 'relative');
@@ -150,7 +151,7 @@ setInterval(function(){
     }
 
     // Initialize isotope
-    table.find('tbody').isotope({
+    tbody.isotope({
       itemSelector: 'tr',
       layout: 'fitRows',
       getSortData: sorters
@@ -162,6 +163,7 @@ setInterval(function(){
     var th = table.find('th');
     th.height(th.height());
     th.css('line-height', 1);
+
 
     var removeSortArrow = function() {
       var activeHeader = table.find('th.sortAsc,th.sortDesc');
@@ -192,7 +194,7 @@ setInterval(function(){
         $(this).addClass('sortAsc');
       }
 
-      table.find('tbody').isotope({
+      tbody.isotope({
         sortBy: sort,
         sortAscending: !reverse,
       });
@@ -203,7 +205,7 @@ setInterval(function(){
     // Update sort data if fields change
     var cellChanged=function(cell){
       var parentRow = $(cell).closest('tr');
-      table.find('tbody').isotope('updateSortData', parentRow);
+      tbody.isotope('updateSortData', parentRow);
 
       var column=$(cell).data('sort-type');
       var columnHeader=$('th[data-sort-type='+column+']');
@@ -211,7 +213,7 @@ setInterval(function(){
       //Only re-sort if this column is the sort column
       if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
       {
-        table.find('tbody').isotope({sortBy: column});
+        tbody.isotope({sortBy: column});
         table.trigger('sort');
       }
     }
