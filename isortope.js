@@ -133,6 +133,20 @@ setInterval(function(){
       th.css('max-width', thWidth);
     }
 
+    // Create border style wrapping functions for spacing fix
+    // All isotope calls should be wrapped in clearBorders() and restoreBorders()
+    var cells = tbody.find('td');
+    var borderTopHeight = cells.css('border-top-width');
+    var borderBottomHeight = cells.css('border-bottom-width');
+    var clearBorders = function () {
+      cells.css('border-top-width', 0);
+      cells.css('border-bottom-width', 0);
+    }
+    var restoreBorders = function() {
+      cells.css('border-top-width', borderTopHeight);
+      cells.css('border-bottom-width', borderBottomHeight);
+    }
+
     // Define sorters
     var sorters = {};
 
@@ -151,11 +165,13 @@ setInterval(function(){
     }
 
     // Initialize isotope
+    clearBorders();
     tbody.isotope({
       itemSelector: 'tr',
       layout: 'fitRows',
       getSortData: sorters
     });
+    restoreBorders();
 
     // Style
     var headerHeight = table.find('thead').height();
@@ -194,10 +210,12 @@ setInterval(function(){
         $(this).addClass('sortAsc');
       }
 
+      clearBorders();
       tbody.isotope({
         sortBy: sort,
         sortAscending: !reverse,
       });
+      restoreBorders();
 
       table.trigger('sort');
     });
@@ -213,7 +231,9 @@ setInterval(function(){
       //Only re-sort if this column is the sort column
       if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
       {
+        clearBorders();
         tbody.isotope({sortBy: column});
+        restoreBorders();
         table.trigger('sort');
       }
     }
