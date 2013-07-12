@@ -63,6 +63,18 @@ JavaScript example:
   $('table#my-table').isortope({autoResort: false});
 ```
 
+Additionally, you can disable sorting on specific columns by setting the attribute ```data-sort-type``` to ```'none'``` on the ```th``` element.  Example:
+
+```html
+  <table>
+    <thead>
+      <th>Sortable Column</th>
+      <th data-sort-type='none'>Non-sortable Column</th>
+    </thead>
+    …
+  </table>
+```
+
 ### Animation
 To enable animations, add the [Isotope animation styles](http://isotope.metafizzy.co/docs/animating.html) to your stylesheet:
 

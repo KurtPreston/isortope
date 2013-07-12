@@ -137,12 +137,16 @@ setInterval(function(){
 
     for(var col = 0; col < numCols; col++) {
       var colClass = 'col' + col;
-      var sortFunctionDef = "return isortopeCellFilter(item.find('." + colClass + "'));";
-      var sortFunction = new Function('item', sortFunctionDef);
-      sorters[colClass] = sortFunction;
-      table.find('tr td:nth-child(' + (col + 1) + ')').addClass(colClass);
-      table.find('tr td:nth-child(' + (col + 1) + ')').data('sort-type',colClass);
-      table.find('th:nth-child(' + (col + 1) + ')').attr('data-sort-type', colClass);
+      var th = table.find('th:nth-child(' + (col + 1) + ')');
+      if (th.attr('data-sort-type') != 'none') {
+        var sortFunctionDef = "return isortopeCellFilter(item.find('." + colClass + "'));";
+        var sortFunction = new Function('item', sortFunctionDef);
+        sorters[colClass] = sortFunction;
+        th.attr('data-sort-type', colClass);
+        th.css('cursor', 'pointer');
+        table.find('tr td:nth-child(' + (col + 1) + ')').addClass(colClass);
+        table.find('tr td:nth-child(' + (col + 1) + ')').data('sort-type',colClass);
+      }
     }
 
     // Initialize isotope
@@ -156,7 +160,6 @@ setInterval(function(){
     var headerHeight = table.find('thead').height();
     table.find('tr').css('top', headerHeight);
     var th = table.find('th');
-    th.css('cursor', 'pointer');
     th.height(th.height());
     th.css('line-height', 1);
 
@@ -169,6 +172,10 @@ setInterval(function(){
     // Header click handlers
     table.find('th').click(function() {
       var sort = $(this).attr('data-sort-type');
+      if (sort == 'none') {
+        return;
+      }
+
       var reverse;
 
       if ($(this).hasClass('sortAsc')) {
