@@ -147,6 +147,14 @@ setInterval(function(){
       cells.css('border-bottom-width', borderBottomHeight);
     }
 
+    // If table has 'separate' cells, change the spacing into margins
+    if (table.css('border-collapse') == 'separate') {
+      var rows = tbody.find('tr');
+      var marginSpacing = parseInt(table.css('border-spacing').split(' ')[0]);
+      var borderSpacing = parseInt(borderBottomHeight);
+      rows.css('margin-bottom', marginSpacing + borderSpacing + 'px');
+    }
+
     // Define sorters
     var sorters = {};
 
