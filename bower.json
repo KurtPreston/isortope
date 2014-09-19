@@ -1,0 +1,26 @@
+{
+  "name": "isortope",
+  "main": "isortope.js",
+  "version": "1.1.0",
+  "homepage": "https://github.com/KurtPreston/isortope",
+  "description": "Simple, animated JavaScript table sorting using Isotope",
+  "keywords": [
+    "isotope",
+    "tablesort",
+    "table",
+    "sort",
+    "animated"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "> 1",
+    "isotope": "> 1"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
