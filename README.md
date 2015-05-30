@@ -128,8 +128,19 @@ To enable animations, add the [Isotope animation styles](http://isotope.metafizz
   $('table.isortope').on('initialized', function() {...});
 ```
 
+### Manual Re-sorting
+
+You can trigger a manual resort by passing 'resort' to isotope:
+
+```javascript
+  $('table.isortope').isortope('resort');
+```
+
 Changelog
 ---
++ **v.1.2**
+  - adding re-sort capability
+  - minor refactoring
 + **v.1.1**
   - auto re-sort when table data changes
   - bug fixes

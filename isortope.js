@@ -104,7 +104,7 @@ setInterval(function(){
     });
 
     this.resort = function() {
-      console.log('test');
+      this.$el.data('isortope').sortTable();
     };
 
     this.init();
@@ -116,6 +116,8 @@ setInterval(function(){
   $.fn.isortope = function(opts) {
     if(opts == 'resort') {
       return this.each(function() {
+        var rows = $(this).find('tbody tr');
+        $(this).find('tbody').isotope('updateSortData', rows);
         $(this).data('isortope').resort();
       });
     } else {
@@ -247,9 +249,10 @@ setInterval(function(){
 
       table.trigger('sort');
     };
+    this.sortTable = sortTable;
 
     // Update sort data if fields change
-    var cellChanged=function(cell){
+    var cellChanged = function(cell) {
       var parentRow = $(cell).closest('tr');
       tbody.isotope('updateSortData', parentRow);
 
