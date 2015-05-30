@@ -18,7 +18,7 @@ var isortopeNumToString = function(number) {
   }
 
   return str;
-}
+};
 
 var isortopeParseString = function(text) {
   // Remove whitespace
@@ -34,14 +34,14 @@ var isortopeParseString = function(text) {
     // Plain text
     return text.toLowerCase();
   }
-}
+};
 
 var isortopeCellFilter = function(element) {
   var text = $(element).text();
   var input = $(element).find('input');
   var returnVal;
 
-  if (text != '') {
+  if (text !== '') {
     // Cell has text
     returnVal = isortopeParseString(text);
   } else if (input.length > 0) {
@@ -71,16 +71,16 @@ jQuery.fn.contentChange = function(callback){
       window.watchContentChange = window.watchContentChange ? window.watchContentChange : [];
       window.watchContentChange.push({"element": elm, "callback": callback});
     }
-  )
+  );
   return elms;
-}
+};
 setInterval(function(){
   if(window.watchContentChange){
-    for( i in window.watchContentChange){
+    for(var i in window.watchContentChange){
       if(window.watchContentChange[i].element.data("lastContents") != window.watchContentChange[i].element.html()){
         window.watchContentChange[i].callback.apply(window.watchContentChange[i].element);
-        window.watchContentChange[i].element.data("lastContents", window.watchContentChange[i].element.html())
-      };
+        window.watchContentChange[i].element.data("lastContents", window.watchContentChange[i].element.html());
+      }
     }
   }
 },500);
@@ -95,7 +95,7 @@ setInterval(function(){
       autoResort: true,
       autoResortInput: true,
       autoResortContent: true
-    }
+    };
 
     this.opts = $.extend(this.defaults, opts, {
       autoResort: this.$el.data('isortope-autoresort'),
@@ -110,7 +110,7 @@ setInterval(function(){
     return this.each(function() {
       new Isortope(this, opts);
     });
-  }
+  };
 
   Isortope.prototype.init = function() {
     var table = this.$el;
@@ -121,7 +121,7 @@ setInterval(function(){
     table.css('height', table.height());
 
     // Fix column width
-    var numCols = table.find('th').length
+    var numCols = table.find('th').length;
     for(var col = 0; col < numCols; col++) {
       var colWidth = table.find('tr:first-child td:nth-child(' + (col + 1) + ')').width();
       table.find('tr td:nth-child(' + (col + 1) + ')').css('width', colWidth);
@@ -141,11 +141,11 @@ setInterval(function(){
     var clearBorders = function () {
       cells.css('border-top-width', 0);
       cells.css('border-bottom-width', 0);
-    }
+    };
     var restoreBorders = function() {
       cells.css('border-top-width', borderTopHeight);
       cells.css('border-bottom-width', borderBottomHeight);
-    }
+    };
 
     // If table has 'separate' cells, change the spacing into margins
     if (table.css('border-collapse') == 'separate') {
@@ -193,7 +193,7 @@ setInterval(function(){
       var activeHeader = table.find('th.sortAsc,th.sortDesc');
       activeHeader.find('.sort-arrow').remove();
       activeHeader.removeClass('sortAsc').removeClass('sortDesc');
-    }
+    };
 
     // Header click handlers
     table.find('th').click(function() {
@@ -244,7 +244,7 @@ setInterval(function(){
         restoreBorders();
         table.trigger('sort');
       }
-    }
+    };
 
     if (this.opts.autoResort && this.opts.autoResortInput) {
       // Update sort data if input value changes
