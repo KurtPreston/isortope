@@ -103,13 +103,26 @@ setInterval(function(){
       autoResortContent: this.$el.data('isortope-autoresort-content')
     });
 
+    this.resort = function() {
+      console.log('test');
+    };
+
     this.init();
+
+    // Assign isortope object to HTML element
+    this.$el.data('isortope', this);
   }
 
   $.fn.isortope = function(opts) {
-    return this.each(function() {
-      new Isortope(this, opts);
-    });
+    if(opts == 'resort') {
+      return this.each(function() {
+        $(this).data('isortope').resort();
+      });
+    } else {
+      return this.each(function() {
+        new Isortope(this, opts);
+      });
+    }
   };
 
   Isortope.prototype.init = function() {
@@ -188,7 +201,6 @@ setInterval(function(){
     th.height(th.height());
     th.css('line-height', 1);
 
-
     var removeSortArrow = function() {
       var activeHeader = table.find('th.sortAsc,th.sortDesc');
       activeHeader.find('.sort-arrow').remove();
@@ -218,6 +230,14 @@ setInterval(function(){
         $(this).addClass('sortAsc');
       }
 
+      sortTable();
+    });
+
+    var sortTable = function() {
+      var $th = $(table).find('th.sortAsc, th.sortDesc').closest('th');
+      var sort = $th.attr('data-sort-type');
+      var reverse = $th.hasClass('sortDesc');
+
       clearBorders();
       tbody.isotope({
         sortBy: sort,
@@ -226,23 +246,20 @@ setInterval(function(){
       restoreBorders();
 
       table.trigger('sort');
-    });
+    };
 
     // Update sort data if fields change
     var cellChanged=function(cell){
       var parentRow = $(cell).closest('tr');
       tbody.isotope('updateSortData', parentRow);
 
-      var column=$(cell).data('sort-type');
-      var columnHeader=$('th[data-sort-type='+column+']');
+      var column = $(cell).data('sort-type');
+      var columnHeader = $('th[data-sort-type='+column+']');
 
-      //Only re-sort if this column is the sort column
+      // Only re-sort if this column is the sort column
       if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
       {
-        clearBorders();
-        tbody.isotope({sortBy: column});
-        restoreBorders();
-        table.trigger('sort');
+        sortTable();
       }
     };
 
