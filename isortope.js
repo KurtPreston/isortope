@@ -1,5 +1,5 @@
 /*
-* isortope v1.1
+* isortope v1.2
 * Simple, animated JavaScript table sorting
 *
 * https://github.com/KurtPreston/isortope
