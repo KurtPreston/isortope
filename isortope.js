@@ -1,5 +1,5 @@
 /*
-* isortope v1.2
+* isortope v1.2.1
 * Simple, animated JavaScript table sorting
 *
 * https://github.com/KurtPreston/isortope
@@ -37,7 +37,7 @@ var isortopeParseString = function(text) {
 };
 
 var isortopeCellFilter = function(element) {
-  var text = $(element).text();
+  var text = $(element).text().replace(/^\s+|\s+$/g, '');
   var input = $(element).find('input');
   var returnVal;
 
