@@ -1,5 +1,5 @@
 /*
-* isortope v1.2.1
+* isortope v1.2.2
 * Simple, animated JavaScript table sorting
 *
 * https://github.com/KurtPreston/isortope
@@ -187,18 +187,33 @@ setInterval(function(){
       }
     }
 
+    // Get yOffset before isotope changes it
+    var headerHeight = table.find('thead').offset().top;
+
+    tbody.each(function(index, el) {
+      var yOffset = $(el).offset().top - headerHeight;
+      $(el).data('offsetHeight', yOffset);
+    });
+
     // Initialize isotope
     clearBorders();
-    tbody.isotope({
-      itemSelector: 'tr',
-      layout: 'fitRows',
-      getSortData: sorters
+
+    tbody.each(function(index, el) {
+      $(el).isotope({
+        itemSelector: 'tr',
+        layout: 'fitRows',
+        getSortData: sorters
+      });
     });
+
     restoreBorders();
 
     // Style
-    var headerHeight = table.find('thead').height();
-    table.find('tr').css('top', headerHeight);
+    tbody.each(function(index, el) {
+      // Restore yOffset
+      var yOffset = $(el).data('offsetHeight');
+      $(el).find('tr').css('top', yOffset);
+    });
     var th = table.find('th');
     th.height(th.height());
     th.css('line-height', 1);
