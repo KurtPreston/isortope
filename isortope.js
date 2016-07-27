@@ -1,5 +1,5 @@
 /*
-* isortope v1.2.2
+* isortope v1.2.3
 * Simple, animated JavaScript table sorting
 *
 * https://github.com/KurtPreston/isortope
@@ -130,6 +130,7 @@ setInterval(function(){
   Isortope.prototype.init = function() {
     var table = this.$el;
     var tbody = table.find('tbody');
+    var rows = table.find('tr');
 
     // Fix position
     table.css('position', 'relative');
@@ -147,6 +148,12 @@ setInterval(function(){
       th.css('width', thWidth);
       th.css('max-width', thWidth);
     }
+
+    // Fix row height
+    rows.each(function(index, el) {
+      $(el).css('height', $(el).height());
+    });
+
 
     // Create border style wrapping functions for spacing fix
     // All isotope calls should be wrapped in clearBorders() and restoreBorders()
