@@ -74,16 +74,30 @@ jQuery.fn.contentChange = function(callback){
   );
   return elms;
 };
-setInterval(function(){
-  if(window.watchContentChange){
-    for(var i in window.watchContentChange){
-      if(window.watchContentChange[i].element.data("lastContents") != window.watchContentChange[i].element.html()){
-        window.watchContentChange[i].callback.apply(window.watchContentChange[i].element);
-        window.watchContentChange[i].element.data("lastContents", window.watchContentChange[i].element.html());
+
+const mutationObserver = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if(window.watchContentChange){
+      for(var i in window.watchContentChange){
+        if(window.watchContentChange[i].element.data("lastContents") != window.watchContentChange[i].element.html()){
+          window.watchContentChange[i].callback.apply(window.watchContentChange[i].element);
+          window.watchContentChange[i].element.data("lastContents", window.watchContentChange[i].element.html());
+        }
       }
     }
-  }
-},500);
+  });
+});
+
+function watchChangeTable(element){
+  mutationObserver.observe(element, {
+    //attributes: true,
+    //characterData: true,
+    childList: true,
+    subtree: true,
+    //attributeOldValue: true,
+    //characterDataOldValue: true
+  });
+}
 
 (function($, doc, win) {
   "use strict";
@@ -131,6 +145,7 @@ setInterval(function(){
     var table = this.$el;
     var tbody = table.find('tbody');
     var rows = table.find('tr');
+    watchChangeTable(tbody.prevObject['0'].querySelector('tbody'));
 
     // Fix position
     table.css('position', 'relative');
