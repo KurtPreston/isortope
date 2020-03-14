@@ -5,65 +5,12 @@
 * https://github.com/KurtPreston/isortope
 */
 
-// Convert cells for comparison
-var isortopeNumToString = function(number) {
-  // Note: the huge offset is to enable negative numbers to be compared as strings
-  number = parseFloat(number) + 450359962737;
-  var length = 40; // Create a string of length 40
-  var str = number.toString();
-  var numDigits = Math.floor(Math.log(number) / Math.LN10);
-
-  for(var i = numDigits; i < length; i++) {
-    str = '0' + str;
-  }
-
-  return str;
-};
-
-var isortopeParseString = function(text) {
-  // Remove whitespace
-  text = text.replace(/^\s+|\s+$/g, "");
-
-  // Check first word
-  var numText = text.split(' ')[0].replace(/[^a-zA-Z0-9\.-]/g, '');
-
-  if (!isNaN(parseFloat(numText))) {
-    // Text is a float or integer
-    return isortopeNumToString(numText);
-  } else {
-    // Plain text
-    return text.toLowerCase();
-  }
-};
-
-var isortopeCellFilter = function(element) {
-  var text = $(element).text().replace(/^\s+|\s+$/g, '');
-  var input = $(element).find('input');
-  var returnVal;
-
-  if (text !== '') {
-    // Cell has text
-    returnVal = isortopeParseString(text);
-  } else if (input.length > 0) {
-    // If there are inputs
-    if (input.val() == 'on') {
-      // Check box
-      returnVal = input.is(':checked').toString();
-    } else {
-      returnVal = isortopeParseString(input.val());
-    }
-  } else {
-    // No text or inputs... sort by raw HTML
-    returnVal = $(element).html();
-  }
-
-  return returnVal;
-};
 
 (function($, doc, win) {
   "use strict";
 
   function Isortope(el, opts) {
+    //---------- Initialization ---------------
     this.$el = $(el);
 
     this.defaults = {
@@ -88,10 +35,65 @@ var isortopeCellFilter = function(element) {
     this.$el.data('isortope', this);
   }
 
+  //---------- Helper functions ---------------
+
+  // Convert cells for comparison
+  function isortopeNumToString(number) {
+    // Note: the huge offset is to enable negative numbers to be compared as strings
+    number = parseFloat(number) + 450359962737;
+    const length = 40; // Create a string of length 40
+    let str = number.toString();
+    const numDigits = Math.floor(Math.log(number) / Math.LN10);
+
+    for(let i = numDigits; i < length; i++) {
+      str = '0' + str;
+    }
+
+    return str;
+  };
+
+  function isortopeParseString(text) {
+    // Remove whitespace
+    text = text.replace(/^\s+|\s+$/g, "");
+
+    // Check first word
+    const numText = text.split(' ')[0].replace(/[^a-zA-Z0-9\.-]/g, '');
+
+    if (!isNaN(parseFloat(numText))) {
+      // Text is a float or integer
+      return isortopeNumToString(numText);
+    } else {
+      // Plain text
+      return text.toLowerCase();
+    }
+  };
+
+  function isortopeCellFilter(element) {
+    const text = $(element).text().replace(/^\s+|\s+$/g, '');
+    const input = $(element).find('input');
+
+    if (text !== '') {
+      // Cell has text
+      return isortopeParseString(text);
+    } else if (input.length > 0) {
+      // If there are inputs
+      if (input.val() == 'on') {
+        // Check box
+        return input.is(':checked').toString();
+      } else {
+        return isortopeParseString(input.val());
+      }
+    } else {
+      // No text or inputs... sort by raw HTML
+      return $(element).html();
+    }
+  };
+
+  //---------- Main function ---------------
   $.fn.isortope = function(opts) {
     if(opts == 'resort') {
       return this.each(function() {
-        var rows = $(this).find('tbody tr');
+        const rows = $(this).find('tbody tr');
         $(this).find('tbody').isotope('updateSortData', rows);
         $(this).data('isortope').resort();
       });
@@ -103,23 +105,23 @@ var isortopeCellFilter = function(element) {
   };
 
   Isortope.prototype.init = function() {
-    var table = this.$el;
-    var tbody = table.find('tbody');
-    var rows = table.find('tr');
+    const table = this.$el;
+    const tbody = table.find('tbody');
+    const rows = table.find('tr');
 
     // Fix position
     table.css('position', 'relative');
     table.css('height', table.height());
 
     // Fix column width
-    var numCols = table.find('th').length;
-    for(var col = 0; col < numCols; col++) {
-      var colWidth = table.find('tr:first-child td:nth-child(' + (col + 1) + ')').width();
+    const numCols = table.find('th').length;
+    for(let col = 0; col < numCols; col++) {
+      const colWidth = table.find('tr:first-child td:nth-child(' + (col + 1) + ')').width();
       table.find('tr td:nth-child(' + (col + 1) + ')').css('width', colWidth);
 
       // Set th width
-      var th = table.find('th:nth-child(' + (col + 1) + ')');
-      var thWidth = th.width();
+      const th = table.find('th:nth-child(' + (col + 1) + ')');
+      const thWidth = th.width();
       th.css('width', thWidth);
       th.css('max-width', thWidth);
     }
@@ -132,35 +134,39 @@ var isortopeCellFilter = function(element) {
 
     // Create border style wrapping functions for spacing fix
     // All isotope calls should be wrapped in clearBorders() and restoreBorders()
-    var cells = tbody.find('td');
-    var borderTopHeight = cells.css('border-top-width');
-    var borderBottomHeight = cells.css('border-bottom-width');
-    var clearBorders = function () {
+    const cells = tbody.find('td');
+    const borderTopHeight = cells.css('border-top-width');
+    const borderBottomHeight = cells.css('border-bottom-width');
+    const clearBorders = function () {
       cells.css('border-top-width', 0);
       cells.css('border-bottom-width', 0);
     };
-    var restoreBorders = function() {
+    const restoreBorders = function() {
       cells.css('border-top-width', borderTopHeight);
       cells.css('border-bottom-width', borderBottomHeight);
     };
 
     // If table has 'separate' cells, change the spacing into margins
     if (table.css('border-collapse') == 'separate') {
-      var rows = tbody.find('tr');
-      var marginSpacing = parseInt(table.css('border-spacing').split(' ')[0]);
-      var borderSpacing = parseInt(borderBottomHeight);
+      const rows = tbody.find('tr');
+      const marginSpacing = parseInt(table.css('border-spacing').split(' ')[0]);
+      const borderSpacing = parseInt(borderBottomHeight);
       rows.css('margin-bottom', marginSpacing + borderSpacing + 'px');
     }
 
     // Define sorters
-    var sorters = {};
+    const sorters = {};
 
-    for(var col = 0; col < numCols; col++) {
-      var colClass = 'col' + col;
-      var th = table.find('th:nth-child(' + (col + 1) + ')');
+    for(let col = 0; col < numCols; col++) {
+      const colClass = 'col' + col;
+      const th = table.find('th:nth-child(' + (col + 1) + ')');
       if (th.attr('data-sort-type') != 'none') {
-        var sortFunctionDef = "return isortopeCellFilter(item.find('." + colClass + "'));";
-        var sortFunction = new Function('item', sortFunctionDef);
+        // const sortFunctionDef = "return isortopeCellFilter(item.find('." + colClass + "'));";
+        // const sortFunction = new Function('item', sortFunctionDef);
+        const sortFunction = (item) => {
+          const cell = item.find('.' + colClass);
+          return isortopeCellFilter(cell);
+        }
         sorters[colClass] = sortFunction;
         th.attr('data-sort-type', colClass);
         th.css('cursor', 'pointer');
@@ -170,10 +176,10 @@ var isortopeCellFilter = function(element) {
     }
 
     // Get yOffset before isotope changes it
-    var headerHeight = table.find('thead').offset().top;
+    const headerHeight = table.find('thead').offset().top;
 
     tbody.each(function(index, el) {
-      var yOffset = $(el).offset().top - headerHeight;
+      const yOffset = $(el).offset().top - headerHeight;
       $(el).data('offsetHeight', yOffset);
     });
 
@@ -193,27 +199,27 @@ var isortopeCellFilter = function(element) {
     // Style
     tbody.each(function(index, el) {
       // Restore yOffset
-      var yOffset = $(el).data('offsetHeight');
+      const yOffset = $(el).data('offsetHeight');
       $(el).find('tr').css('top', yOffset);
     });
-    var th = table.find('th');
+    const th = table.find('th');
     th.height(th.height());
     th.css('line-height', 1);
 
-    var removeSortArrow = function() {
-      var activeHeader = table.find('th.sortAsc,th.sortDesc');
+    const removeSortArrow = function() {
+      const activeHeader = table.find('th.sortAsc,th.sortDesc');
       activeHeader.find('.sort-arrow').remove();
       activeHeader.removeClass('sortAsc').removeClass('sortDesc');
     };
 
     // Header click handlers
     table.find('th').click(function() {
-      var sort = $(this).attr('data-sort-type');
+      const sort = $(this).attr('data-sort-type');
       if (sort == 'none') {
         return;
       }
 
-      var reverse;
+      let reverse;
 
       if ($(this).hasClass('sortAsc')) {
         // Switch to sortDesc
@@ -232,10 +238,10 @@ var isortopeCellFilter = function(element) {
       sortTable();
     });
 
-    var sortTable = function() {
-      var $th = $(table).find('th.sortAsc, th.sortDesc').closest('th');
-      var sort = $th.attr('data-sort-type');
-      var reverse = $th.hasClass('sortDesc');
+    const sortTable = function() {
+      const $th = $(table).find('th.sortAsc, th.sortDesc').closest('th');
+      const sort = $th.attr('data-sort-type');
+      const reverse = $th.hasClass('sortDesc');
 
       clearBorders();
       tbody.isotope({
@@ -249,12 +255,12 @@ var isortopeCellFilter = function(element) {
     this.sortTable = sortTable;
 
     // Update sort data if fields change
-    var cellChanged = function(cell) {
-      var parentRow = $(cell).closest('tr');
+    const cellChanged = function(cell) {
+      const parentRow = $(cell).closest('tr');
       tbody.isotope('updateSortData', parentRow);
 
-      var column = $(cell).data('sort-type');
-      var columnHeader = $('th[data-sort-type='+column+']');
+      const column = $(cell).data('sort-type');
+      const columnHeader = $('th[data-sort-type='+column+']');
 
       // Only re-sort if this column is the sort column
       if(columnHeader.hasClass('sortAsc') || columnHeader.hasClass('sortDesc'))
@@ -266,7 +272,7 @@ var isortopeCellFilter = function(element) {
     if (this.opts.autoResort && this.opts.autoResortInput) {
       // Update sort data if input value changes
       table.find('input').change(function() {
-        var cell=$(this).parent('td');
+        const cell=$(this).parent('td');
         cellChanged(cell);
       });
     }
