@@ -14,6 +14,13 @@ View a live demo [here](http://www.kurtpreston.com/isortope).
 Use
 ---
 ### Requirements
+
+#### JavaScript version
+* Isortope 1.2.x is compatible with ES5.
+* Isortope 1.3.x requires ES6
+
+#### Modules
+
 Load [jQuery](http://jquery.com/) and [Isotope](http://isotope.metafizzy.co/) before loading **isortope**.
 
 ```javascript
