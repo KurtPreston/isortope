@@ -1,5 +1,5 @@
 /*
-* isortope v1.2.3
+* isortope v1.3.0
 * Simple, animated JavaScript table sorting
 *
 * https://github.com/KurtPreston/isortope
@@ -60,45 +60,6 @@ var isortopeCellFilter = function(element) {
   return returnVal;
 };
 
-// jQuery plugin to monitor changes.  Adapted from the following code:
-// http://stackoverflow.com/questions/3233991/jquery-watch-div/3234646#3234646
-jQuery.fn.contentChange = function(callback){
-  var elms = jQuery(this);
-  elms.each(
-    function(i){
-      var elm = jQuery(this);
-      elm.data("lastContents", elm.html());
-      window.watchContentChange = window.watchContentChange ? window.watchContentChange : [];
-      window.watchContentChange.push({"element": elm, "callback": callback});
-    }
-  );
-  return elms;
-};
-
-const mutationObserver = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    if(window.watchContentChange){
-      for(var i in window.watchContentChange){
-        if(window.watchContentChange[i].element.data("lastContents") != window.watchContentChange[i].element.html()){
-          window.watchContentChange[i].callback.apply(window.watchContentChange[i].element);
-          window.watchContentChange[i].element.data("lastContents", window.watchContentChange[i].element.html());
-        }
-      }
-    }
-  });
-});
-
-function watchChangeTable(element){
-  mutationObserver.observe(element, {
-    //attributes: true,
-    //characterData: true,
-    childList: true,
-    subtree: true,
-    //attributeOldValue: true,
-    //characterDataOldValue: true
-  });
-}
-
 (function($, doc, win) {
   "use strict";
 
@@ -145,7 +106,6 @@ function watchChangeTable(element){
     var table = this.$el;
     var tbody = table.find('tbody');
     var rows = table.find('tr');
-    watchChangeTable(tbody.prevObject['0'].querySelector('tbody'));
 
     // Fix position
     table.css('position', 'relative');
@@ -313,8 +273,18 @@ function watchChangeTable(element){
 
     if (this.opts.autoResort && this.opts.autoResortContent) {
       // Update sort data if cell text changes
-      table.find('td').contentChange( function(){
-        cellChanged(this);
+      const mutationObserver = new MutationObserver((mutationRecords) => {
+        mutationRecords.forEach((mutationRecord) => {
+          const cell = $(mutationRecord.target).closest('td');
+          cellChanged(cell);
+        });
+      });
+      table.find('td').each((i, el) => {
+        mutationObserver.observe(el, {
+          childList: true,
+          characterData: true,
+          subtree: true
+        });
       });
     }
 
